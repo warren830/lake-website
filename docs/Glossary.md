@@ -51,7 +51,7 @@ To learn more about the default data scope of all data sources and data plugins,
 For instance, if you wish to pull Source Code Management data from GitHub and Issue Tracking data from Jira, you can check the corresponding data entities during setting the data scope of these two data connections.
 
 To learn more details, please refer to [Domain Layer Schema](./DataModels/DevLakeDomainLayerSchema.md).
-
+   
 ### Transformation Rules
 **Transformation rules are a collection of methods that allow you to customize how DevLake normalizes raw data for query and metric computation.** Each set of data scope is strictly accompanied with one set of transformation rules. However, for your convenience, transformation rules can also be duplicated across different sets of data scope.
 
