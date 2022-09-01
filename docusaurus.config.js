@@ -1,18 +1,24 @@
+// @ts-check
+// Note: type annotations allow type checking and IDEs autocompletion
 const lightCodeTheme = require('prism-react-renderer/themes/github');
 const darkCodeTheme = require('prism-react-renderer/themes/dracula');
+const math = require('remark-math');
+const katex = require('rehype-katex');
+const versions = require('./versions.json');
+
 
 // With JSDoc @type annotations, IDEs can provide config autocompletion
 /** @type {import('@docusaurus/types').DocusaurusConfig} */
 (module.exports = {
-  title: 'DevLake',
-  tagline: 'DevLake is an open-source development data platform that converges operational data sources to distill development  insights throughout the software development life cycle (SDLC).',
-  url: 'https://devlake.io',
+  title: 'Apache DevLake (Incubating)',
+  tagline: 'Apache DevLake is an open-source dev data platform that ingests, analyzes, and visualizes the fragmented data from DevOps tools to distill insights for engineering productivity.',
+  url: 'https://devlake.apache.org',
   baseUrl: '/',
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'throw',
   favicon: 'img/logo.svg',
-  organizationName: 'merico-dev', // Usually your GitHub org/user name.
-  projectName: 'devlake', // Usually your repo name.
+  organizationName: 'Apache',
+  projectName: 'Apache DevLake',
 
   presets: [
     [
@@ -23,17 +29,34 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
           path: 'docs',
           sidebarPath: require.resolve('./sidebars.js'),
           // set to undefined to remove Edit this Page
-          editUrl: undefined,
+          editUrl: 'https://github.com/apache/incubator-devlake-website/edit/main',
+          remarkPlugins: [math, [require('mdx-mermaid'), {
+            theme: {light: 'neutral', dark: 'forest'}
+          }]],
+          rehypePlugins: [katex],
+          versions: {
+            current: {
+              label: 'Latest',
+              path: '',
+              banner: 'none',
+            },
+            [versions[0]]: {
+              path: versions[0],
+            }
+          }
         },
         blog: {
           showReadingTime: true,
           readingTime: ({content, frontMatter, defaultReadingTime}) =>
             defaultReadingTime({content, options: {wordsPerMinute: 300}}),
           // Please change this to your repo.
-          editUrl:
-            undefined,
-            blogSidebarTitle: 'All posts',
-            blogSidebarCount: 'ALL',
+          editUrl: 'https://github.com/apache/incubator-devlake-website/edit/main',
+          remarkPlugins: [math, [require('mdx-mermaid'), {
+            theme: {light: 'neutral', dark: 'forest'}
+          }]],
+          rehypePlugins: [katex],
+          blogSidebarTitle: 'All posts',
+          blogSidebarCount: 'ALL',
         },
         theme: {
           customCss: require.resolve('./src/css/custom.css'),
@@ -42,7 +65,7 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
     ],
   ],
 
- plugins: [
+  plugins: [
     [
       '@docusaurus/plugin-content-docs',
       {
@@ -70,37 +93,84 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
       navbar: {
-        title: 'DevLake',
+        title: 'Apache DevLake',
         logo: {
-          alt: 'DevLake',
+          alt: 'apache-devlake',
           src: 'img/logo.svg',
         },
         items: [
           {
-            type: 'doc',
-            docId: 'Overview/WhatIsDevLake',
+            // type: 'doc',
+            // docId: 'Overview/Introduction',
             position: 'right',
             label: 'Docs',
+            items: [
+              {
+                label: "Latest",
+                to: "/docs/Overview/Introduction",
+              },
+              ...versions.slice(0, versions.length - 2).map((version) => ({
+                label: version,
+                to: `docs/${version}/Overview/Introduction`,
+              })),
+              ...versions.slice(versions.length - 2, versions.length).map((version) => ({
+                label: (version === "1.x") ? "1.x(Not Apache Release)" : version,
+                to: `docs/${version}/Overview/Introduction`,
+              }))
+            ]
           },
-         {
+          {
             type: 'doc',
             docId: 'index',
             position: 'right',
             label: 'Community',
             docsPluginId: 'community'
           },
-          {to: '/blog', label: 'Blog', position: 'right'},
           {
-            href: 'https://github.com/merico-dev/lake/graphs/contributors',
-            label: 'Team',
-            position: 'right',
+            to: '/blog',
+            label: 'Blog',
+            position: 'right'
           },
           {
-            href: 'https://github.com/merico-dev/lake',
+            to: 'https://github.com/apache/incubator-devlake',
             label: 'GitHub',
             position: 'right',
           },
-          
+          {
+            type: 'dropdown',
+            label: 'ASF',
+            position: 'right',
+            items: [
+              {
+                label: 'Foundation',
+                to: 'https://www.apache.org/',
+              },
+              {
+                label: 'License',
+                to: 'https://www.apache.org/licenses/',
+              },
+              {
+                label: 'Events',
+                to: 'https://www.apache.org/events/current-event',
+              },
+              {
+                label: 'Security',
+                to: 'https://www.apache.org/security/',
+              },
+              {
+                label: 'Privacy',
+                to: 'https://privacy.apache.org/policies/privacy-policy-public.html',
+              },
+              {
+                label: 'Sponsorship',
+                to: 'https://www.apache.org/foundation/sponsorship.html',
+              },
+              {
+                label: 'Thanks',
+                to: 'https://www.apache.org/foundation/thanks.html',
+              }
+            ],
+          },
           {
             type: 'localeDropdown',
             position: 'right',
@@ -114,8 +184,20 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
             title: 'Docs',
             items: [
               {
-                label: 'Docs',
-                to: '/docs/Overview/WhatIsDevLake',
+                label: 'Getting Started',
+                to: 'docs/GettingStarted',
+              },
+              {
+                label: 'Data Models',
+                to: 'docs/DataModels/DevLakeDomainLayerSchema',
+              },
+              {
+                label: 'Engineering Metrics',
+                to: 'docs/Metrics',
+              },
+              {
+                label: 'Dashboards (Live Demo)',
+                to: 'docs/LiveDemo',
               },
             ],
           },
@@ -124,7 +206,11 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
             items: [
               {
                 label: 'Slack',
-                href: 'https://join.slack.com/t/devlake-io/shared_invite/zt-17b6vuvps-x98pqseoUagM7EAmKC82xQ',
+                to: 'https://join.slack.com/t/devlake-io/shared_invite/zt-17b6vuvps-x98pqseoUagM7EAmKC82xQ',
+              },
+              {
+                label: 'GitHub Issue Tracker',
+                to: 'https://github.com/apache/incubator-devlake/issues',
               },
             ],
           },
@@ -133,12 +219,18 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
             items: [
               {
                 label: 'GitHub',
-                href: 'https://github.com/merico-dev/lake',
+                to: 'https://github.com/apache/incubator-devlake',
               },
             ],
           },
         ],
-        copyright: `Copyright © ${new Date().getFullYear()} DevLake@Merico Inc.`,
+        copyright: `
+        <div style="margin-top: 20px">
+          <a href="https://incubator.apache.org/" target="_blank"><img style="height:40px; margin-bottom: 10px; margin-top: 10px" alt="Apache Software Foundation" src= "/img/apache-incubator.svg" /></a>
+          <p style="text-align:left; font-weight: 300; font-size: 0.8em;">Apache DevLake is an effort undergoing incubation at The Apache Software Foundation (ASF), sponsored by the Apache Incubator. Incubation is required of all newly accepted projects until a further review indicates that the infrastructure, communications, and decision making process have stabilized in a manner consistent with other successful ASF projects. While incubation status is not necessarily a reflection of the completeness or stability of the code, it does indicate that the project has yet to be fully endorsed by the ASF.</p>
+          <p style="text-align:left; font-weight: 300; font-size: 0.8em;">Copyright ©${new Date().getFullYear()} Apache DevLake, DevLake, Apache, the Apache feather logo and the Apache DevLake project logo are either registered trademarks or trademarks of The Apache Software Foundation in the United States and other countries.</p>
+        </div> 
+        `,
       },
       prism: {
         theme: lightCodeTheme,

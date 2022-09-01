@@ -4,29 +4,29 @@ import styles from './HomepageFeatures.module.css';
 
 const FeatureList = [
   {
-    title: 'Silos Connected',
-    Svg: require('../../static/img/SilosConnected.svg').default,
+    title: 'Data Silos Connected',
+    Svg: require('../../static/img/Homepage/SilosConnected.svg').default,
     description: (
       <>
-        Collect DevOps data across the entire SDLC process and connect data silos
+        Collect DevOps data across the entire Software Development LifeCycle (SDLC) and connect siloed data with a standard data model
       </>
     ),
   },
   {
     title: 'Out-of-the-box Analysis',
-    Svg: require('../../static/img/OutoftheboxAnalysis.svg').default,
+    Svg: require('../../static/img/Homepage/OutoftheboxAnalysis.svg').default,
     description: (
       <>
-        Collect DevOps data across the entire SDLC process and connect data silos
+        Visualize out-of-the-box engineering metrics in a series of use-case driven dashboards
       </>
     ),
   },
   {
-    title: 'Highly Flexible',
-    Svg: require('../../static/img/HighlyFlexible.svg').default,
+    title: 'A Highly Flexible Framework',
+    Svg: require('../../static/img/Homepage/HighlyFlexible.svg').default,
     description: (
       <>
-        Flexible framework for data collection and ETL, support customized analysis
+        Easily extend DevLake to support your data sources, metrics, and dashboards
       </>
     ),
   },
